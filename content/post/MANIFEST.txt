@@ -1,3 +1,0 @@
-id	filename	md5	size	state
-661c6329-7f2f-4875-8319-594f056f1a39	661c6329-7f2f-4875-8319-594f056f1a39/nationwidechildrens.org_clinical.TCGA-08-0516.xml	1e40401ea24bed5aa9e470847a8f4433	30568	validated
-ca3b2977-3abb-407d-aa79-f39d38790bd5	ca3b2977-3abb-407d-aa79-f39d38790bd5/nationwidechildrens.org_clinical.TCGA-02-0317.xml	1ad6b48f8c65578290525ae9010bbd70	29915	validated
