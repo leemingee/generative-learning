@@ -1,5 +1,5 @@
 ---
-title: "about me"
+title: "About me"
 date: 2018-12-26T21:38:52+08:00
 menu: "main"
 weight: 50
@@ -18,4 +18,4 @@ This blog is about things that interest me or something I want to share with you
 
 So if you are interested in any of these topics - feel free to stick around!
 
-![Alexa, 4 months, Central Park](../img/Alexa_4_months.png)
+![Alexa, 4 months @ Central Park, July 4th 2018](Alexa_4_months.jpg)
