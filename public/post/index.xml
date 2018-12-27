@@ -23,5 +23,15 @@
  What I want to share?  The tech things I m interested, the cool things I learned about, studying and working on, and want to explore in the future. The outdoor activities I m enjoying. Skateboarding and hiking.   </description>
     </item>
     
+    <item>
+      <title>Buying a car data sceintist way</title>
+      <link>/www.ming-learning.com/2017/07/09/buy-car-part1/</link>
+      <pubDate>Sun, 09 Jul 2017 00:00:00 +0000</pubDate>
+      <author>leemingee1995@gmail.com (Ming Li)</author>
+      <guid>/www.ming-learning.com/2017/07/09/buy-car-part1/</guid>
+      <description>Recently I’ve been thinking about what car to buy. Searching the web is one way, but I wanted to do it in a more “data” way, so in this series I’ll show how I’ve extracted data about ~19.000 used cars in Berlin to find out what models/manufacturers seem to hold the price for longer.
+In my case I’ve decided to use this as an excuse to practice some of the skills that I’ve been dying to try for a long time - web scrapping with R.</description>
+    </item>
+    
   </channel>
 </rss>

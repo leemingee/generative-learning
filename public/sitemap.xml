@@ -13,6 +13,11 @@
   </url>
   
   <url>
+    <loc>/www.ming-learning.com/2017/07/09/buy-car-part1/</loc>
+    <lastmod>2017-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/www.ming-learning.com/categories/</loc>
     <priority>0</priority>
   </url>
@@ -36,7 +41,26 @@
   </url>
   
   <url>
+    <loc>/www.ming-learning.com/categories/r/</loc>
+    <lastmod>2017-07-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/www.ming-learning.com/tags/scraping/</loc>
+    <lastmod>2017-07-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/www.ming-learning.com/tags/</loc>
+    <lastmod>2017-07-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/www.ming-learning.com/tags/tidyverse/</loc>
+    <lastmod>2017-07-09T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

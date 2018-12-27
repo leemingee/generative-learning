@@ -7,7 +7,6 @@ categories:
   - daily
 tags:
   - utils
-subtitle: 'The things keep in mind'
 ---
 
 This is my first blog, so here I draft something to keep myself reminded of. Those things are:
