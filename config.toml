@@ -1,6 +1,6 @@
 baseURL = "http://localhost:1313/"
 DefaultContentLanguage = "en"
-title = "Generative Learning"
+title = "test"
 theme = "beautifulhugo"
 metaDataFormat = "yaml"
 pygmentsUseClasses = true
@@ -21,17 +21,18 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     dateFormat = "January 2, 2006"
     commit = false
     # rss = true
-    comments = true
+    comments = false
+    # comments = true
     #[todo] the staticman_api setup
     # it seems that this is a must 
-    staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/romatik/netlify-blog/master/comments"
+    staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/leemingee/generative-learning/ano-template/comments"
 
 # Set up your menu items in the navigation bar
 # You can use identifier to prepend a font awesome icon to your text
 [[menu.main]]
     name = "All posts"
     url = "/post/"
-    identifier = "fa fa-newspaper-o"
+    identifier = "samples"
     weight = 1
 
 [[menu.main]]

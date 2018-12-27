@@ -4,9 +4,9 @@
 # another one to handle posts.
 comments:
   allowedFields: ["path", "name", "email", "message"]
-  allowedOrigins: ["localhost", "www.mishabalyasin.com"]
+  allowedOrigins: ["localhost", "www.ming-learning.com"]
   commitMessage: "You have a new comment on your website."
-  branch: "master"
+  branch: "ano-template"
   generatedFields:
     date:
       type: date
@@ -16,7 +16,7 @@ comments:
   moderation: true
   notifications:
     enabled: false
-  name: "www.mishabalyasin.com"
+  name: "www.ming-learning.com"
   path: "data/comments"
   filename: "{fields.date}_{@id}"
   requiredFields: ["path", "name", "email", "message"]
