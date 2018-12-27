@@ -1,4 +1,4 @@
-baseURL = "https://www.shixiangwang.top/"
+baseURL = "http://ming-learning.com"
 languageCode = "en"
 defaultContentLanguage = "en"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "Generative Learning"
@@ -15,7 +15,7 @@ googleAnalytics = ""      # UA-XXXXXXXX-X
 copyright = ""            # default: author.name ↓        # 默认为下面配置的author.name ↓
 
 [author]                  # essential                     # 必需
-  name = "Shixiang Wang"
+  name = "Generative Learning"
 
 [sitemap]                 # essential                     # 必需
   changefreq = "weekly"
@@ -28,17 +28,17 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   identifier = "home"
   url = "/"
 [[menu.main]]
-  name = "归档"
+  name = "Archives"
   weight = 20
   identifier = "archives"
   url = "/post/"
 [[menu.main]]
-  name = "标签"
+  name = "Tags"
   weight = 30
   identifier = "tags"
   url = "/tags/"
 [[menu.main]]
-  name = "目录"
+  name = "Categories"
   weight = 40
   identifier = "categories"
   url = "/categories/"
@@ -119,7 +119,8 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
     clientSecret = ""       # Your client secret
 
   [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
-    owner = "ShixiangWang"              # Your GitHub ID
+    # todo setup this
+    owner = "leemingee"              # Your GitHub ID
     repo = "MessageBoard"               # The repo to store comments
     clientId = "f9690660976085578e62"           # Your client ID
     clientSecret = "c908008cf475c9dfa6f2a4ecddc31a40ea54eee7"       # Your client secret
@@ -144,20 +145,20 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
     alipay = "/path/to/your/alipay-qr-code.png"           # 支付宝二维码
 
   [params.social]                                         # 社交链接
-    a-email = "mailto:w_shixiang@163.com"
-    b-stack-overflow = "https://stackoverflow.com/users/7662327/wang-shixiang"
-    c-twitter = "https://twitter.com/WangShxiang"
+    a-email = "mailto:leemingee1995@gmail.com"
+ #    b-stack-overflow = "https://stackoverflow.com/users/7662327/wang-shixiang"
+ #   c-twitter = "https://twitter.com/WangShxiang"
  #   d-facebook = "http://localhost:1313"
- #   e-linkedin = "http://localhost:1313"
+    e-linkedin = "http://linkedin.com/in/leemingee"
  #   f-google = "http://localhost:1313"
-    g-github = "https://github.com/ShixiangWang"
+    g-github = "https://github.com/leemingee"
  #   h-weibo = "http://localhost:1313"
-    i-zhihu = "https://www.zhihu.com/people/wang-shi-xiang-65/activities"
+ #   i-zhihu = "https://www.zhihu.com/people/wang-shi-xiang-65/activities"
  #   j-douban = "http://localhost:1313"
  #   k-pocket = "http://localhost:1313"
  #   l-tumblr = "http://localhost:1313"
  #   m-instagram = "http://localhost:1313"
-    n-heart = "https://www.jianshu.com/u/b6608e27dc74"
+ #   n-heart = "https://www.jianshu.com/u/b6608e27dc74"
 
 # 将下面这段配置取消注释可以使 hugo 生成 .md 文件
 # Uncomment these options to make hugo output .md files.
