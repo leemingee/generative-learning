@@ -4,3 +4,4 @@
 .Ruserdata
 public/*
 *.sqlite
+*.DS_Store
