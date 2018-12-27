@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on test</title>
-    <link>http://localhost:1313/categories/</link>
-    <description>Recent content in Categories on test</description>
+    <title>Categories on Generative Learning</title>
+    <link>/www.ming-learning.com/categories/</link>
+    <description>Recent content in Categories on Generative Learning</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>leemingee1995@gmail.com (Ming Li)</managingEditor>
     <webMaster>leemingee1995@gmail.com (Ming Li)</webMaster>
     
-	<atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/www.ming-learning.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Daily</title>
-      <link>http://localhost:1313/categories/daily/</link>
+      <link>/www.ming-learning.com/categories/daily/</link>
       <pubDate>Wed, 26 Dec 2018 00:00:00 +0000</pubDate>
       <author>leemingee1995@gmail.com (Ming Li)</author>
-      <guid>http://localhost:1313/categories/daily/</guid>
+      <guid>/www.ming-learning.com/categories/daily/</guid>
       <description></description>
     </item>
     
