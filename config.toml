@@ -23,7 +23,8 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     rss = true
     comments = true
     #[todo] the staticman_api setup
-    # staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/romatik/netlify-blog/master/comments"
+    # it seems that this is a must 
+    staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/romatik/netlify-blog/master/comments"
 
 # Set up your menu items in the navigation bar
 # You can use identifier to prepend a font awesome icon to your text

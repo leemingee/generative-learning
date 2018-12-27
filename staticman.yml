@@ -1,0 +1,25 @@
+# Name of the property. You can have multiple properties with completely
+# different config blocks for different sections of your site.
+# For example, you can have one property to handle comment submission and
+# another one to handle posts.
+comments:
+  allowedFields: ["path", "name", "email", "message"]
+  allowedOrigins: ["localhost", "www.mishabalyasin.com"]
+  commitMessage: "You have a new comment on your website."
+  branch: "master"
+  generatedFields:
+    date:
+      type: date
+      options:
+        format: "iso8601"
+  format: "yml"
+  moderation: true
+  notifications:
+    enabled: false
+  name: "www.mishabalyasin.com"
+  path: "data/comments"
+  filename: "{fields.date}_{@id}"
+  requiredFields: ["path", "name", "email", "message"]
+  transforms:
+    body: "frontmatterContent"
+    email: md5
