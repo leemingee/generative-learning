@@ -1,7 +1,8 @@
-+++
-title = "About me"
-date = "2018-12-23"
-+++
+title: "about me"
+date: 2018-12-26
+menu: "main"
+weight: 50
+
 
 This is two days to Chrismas, the weather become warmer in NY these days, nice time to launch this blog.
 My name is Ming Li, currently a Statistics student in Columbia University. 
