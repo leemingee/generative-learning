@@ -1,8 +1,9 @@
+---
 title: "about me"
-date: 2018-12-26
+date: 2018-12-26T21:38:52+08:00
 menu: "main"
 weight: 50
-
+---
 
 This is two days to Chrismas, the weather become warmer in NY these days, nice time to launch this blog.
 My name is Ming Li, currently a Statistics student in Columbia University. 
