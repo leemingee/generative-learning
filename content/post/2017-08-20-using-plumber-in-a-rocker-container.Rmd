@@ -1,0 +1,84 @@
+---
+title: Using plumber in a Rocker container
+author: Misha Balyasin
+date: '2017-08-21'
+slug: using-plumber-in-a-rocker-container
+categories: []
+tags:
+  - rocker
+  - plumber
+  - API
+---
+
+In this post I'll go over my steps to create a docker image with `plumber` package to have a REST API endpoint on EC2 Amazon instance. This means that this endpoint will "live" and respond to requests from any tool of your choosing. 
+
+Initially, I've set up to do this in order to add [Slack Slash command](https://api.slack.com/slash-commands). However, I didn't look into documentation first (RTFM!) and apparently slash commands can only return text. In my case I've created a `ggplot2` plot that can't be transferred. Oh, well :).
+
+## Creating a custom `plumber` image
+
+Tutorial on how to use `Docker` with `plumber` is [here](https://www.rplumber.io/docs/hosting.html#docker).
+
+1. First step is obvious - `docker pull trestletech/plumber`.
+
+2. To run `docker run --rm -p 8000:8000 trestletech/plumber` you don't need `plumber` on your local machine. However, there is a problem in examples since all end files were renamed to `plumber.R`. That means that if you want to run `docker run --rm -p 8000:8000 trestletech/plumber /usr/local/lib/R/site-library/plumber/examples/04-mean-sum/meansum.R`, you'll be greeted with `Error in plumber::plumb(commandArgs()[4]) : File does not exist: /usr/local/lib/R/site-library/plumber/examples/04-mean-sum/meansum.R`. So, instead you want to write: `sudo docker run --rm -p 8000:8000 trestletech/plumber   /usr/local/lib/R/site-library/plumber/examples/04-mean-sum/plumber.R`. I've opened an [issue](https://github.com/trestletech/plumber/issues/159) so at some point it'll be fixed, hopefully.
+
+3. Also, there is no `tail` method there, so to test that everything is working, you should instead try in the terminal: `curl localhost:8000/mean`.
+
+4. Customizing `Docker` image is done in `Dockerfile`. In the end, my `Dockerfile` is looking like that: 
+
+```{bash, eval=FALSE}
+FROM trestletech/plumber
+MAINTAINER mishabalyasin <my-e-mail@123.com>
+RUN R -e "install.packages('ggplot2')"
+ADD plumber.R /app/
+```
+
+5. With `Dockerfile` in the current directory I ran `docker build -t plumber-heart .` (file `plumber.R` should be in the same folder as `Dockerfile`). In my case, `plumber.R` was a file that drew a heart like this:
+
+```{r, fig.height=3, fig.width=3, eval=FALSE}
+# code for the heart is from here - https://www.r-bloggers.com/shoot-the-heart-with-monte-carlo/
+#' @get /heart
+#' @png
+function(){
+  library("ggplot2")
+  heart.up <- function(x) {sqrt(1-(abs(x)-1)^2)} #Upper part of the heart
+  heart.dw <- function(x) {acos(1-abs(x))-pi}    #Lower part of the heart
+  #Plot of the heart
+  p <- ggplot(data.frame(x=c(-2,2)), aes(x)) +
+    stat_function(fun=heart.up, geom="line", aes(colour="heart.up")) +
+    stat_function(fun=heart.dw, geom="line", aes(colour="heart.dw")) +
+    scale_colour_manual("Function", values=c("red","red"), breaks=c("heart.up","heart.dw"))+
+    labs(x = "", y = "") +
+    guides(color = FALSE) +
+    theme_void()
+  print(p)
+}
+```
+
+6. Finally, running the image is `docker run --rm -p 8000:8000 plumber-heart /app/plumber.R`. One small detail about using `ggplot` is that you need to explicitly `print` resulting plot. Otherwise you'll get this [error](https://github.com/trestletech/plumber/issues/18).
+
+At this point you can test that everything is working by going to `http://localhost:8000/heart`
+
+## Sharing resulting image on Docker hub
+
+1. First, login to Docker hub: `docker login --username=mishabalyasin`
+
+2. Type `docker images` to find the ID of the image that was created in step 5 above.
+
+3. Assign tag `docker tag <IMAGE_ID> mishabalyasin/plumber-heart:working`.
+
+4. And, finally `docker push mishabalyasin/plumber-heart`.
+
+## Deploying in the cloud
+
+Final step is to deploy it to the cloud since we want to use `GET` method with, e.g., `curl`.
+
+1. Create [Amazon Linux instance](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance.html). Free tier is available and enough for this type of endpoint.
+
+2. Install Docker as explained [here](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#install_docker).
+
+3. `docker pull mishabalyasin/plumber-heart:working`.
+
+4. Finally, we are ready to `docker run --rm -d -p 8000:8000 <IMAGE_ID> /app/plumber.R` (Notice that you need to use ID, not the name of the image).
+
+Congratulations - you have your own API endpoint!

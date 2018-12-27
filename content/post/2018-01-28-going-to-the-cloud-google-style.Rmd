@@ -1,0 +1,80 @@
+---
+title: Going to the cloud Google style
+author: Misha Balyasin
+date: '2018-01-28'
+slug: going-to-the-cloud-google-style
+categories:
+  - R
+tags:
+  - CloudML
+  - Google
+  - deep learning
+  - future me
+---
+
+There are multiple cloud providers that one can choose from and overtime I'm planning to try working with all of them. But the first on the line is CloudML from Google. The biggest reason for that choice is outstanding work from RStudio folks that created multiple packages that make working with Google infrastructure a breeze (300$ of free credit are also a big factor). Specifically today I'll go over tutorials of `cloudml` [package](https://tensorflow.rstudio.com/tools/cloudml) and provide future self (and you) with pointers of where things can or will go wrong and how to avoid them.
+
+# Getting Started
+
+Link to the [article](https://tensorflow.rstudio.com/tools/cloudml/articles/getting_started.html).
+
+From the get go I've run in a difficulty since process described in the article didn't seem to produce result. Specifically, in the article authors say that running `gcloud_install()` should install CloudML SDK on the computer. However, that didn't happen. I kept getting `Error in gcloud_binary() : failed to find 'gcloud' binary` error and nothing happened. To solve it, I've followed instructions in this [article](https://cloud.google.com/sdk/downloads#interactive) directly from Google.
+
+After that, running `gcloud_init()` did work and I've managed to authenticate with Google account. 
+
+# Training with CloudML
+
+[Article](https://tensorflow.rstudio.com/tools/cloudml/articles/training.html)
+
+First step is, of course, omitted, but in fact one needs to set up the access to CloudML API's in order for any job to be created. For that, in the console *for the project* you need to go to the tab "API and Services" on the left, then click on "Enable APIS and Services" at the top. There, you need to enable "Google Cloud Machine Learning Engine" by typing the name in the search bar and clicking on "Enable" of the page for this API.
+
+Once this is set up, I've also used the example that RStudio provides at the GitHub for the package ([MNIST example](https://github.com/rstudio/cloudml/blob/master/inst/examples/mnist/train.R)). You need to save this script at the root of the working directory. The easiest way to do it is to start the new project and work there.
+
+First time you run anything in the new project will take a while since there is a lot of packages being compiled at the background. After that it should go much faster (for me it took around 10 minutes to prepare everything). The process can be monitored with `job_status()` function, but also from RStudio console directly (if you choose the option to do so).
+
+# Hyperparameter Tuning
+
+[Article](https://tensorflow.rstudio.com/tools/cloudml/articles/tuning.html)
+
+First thing is to decide which script to use. I've found one example in the same directory as previous example. Specifically, [here](https://github.com/rstudio/cloudml/blob/master/inst/examples/keras/mnist_mlp.R).
+
+One thing that probably changed from the last time article above was updated, is that now it is mandatory to specify number of parallel trials (field `maxParallelTrials` for Keras). Without it, Google will error out and not run the job. That is odd since official documentation specifies this field as optional with default value of 1 (you can see it [here](https://cloud.google.com/ml-engine/reference/rest/v1/projects.jobs#HyperparameterSpec)).
+
+The final version of `tuning.yml` I've used is:
+
+```
+trainingInput:
+  scaleTier: CUSTOM
+  masterType: standard_gpu
+  hyperparameters:
+    goal: MAXIMIZE
+    hyperparameterMetricTag: val_acc
+    maxTrials: 4
+    maxParallelTrials: 1
+    params:
+      - parameterName: dropout1
+        type: DOUBLE
+        minValue: 0.2
+        maxValue: 0.6
+        scaleType: UNIT_LINEAR_SCALE
+```
+
+I didn't find any issue with the rest of the article.
+
+# Google Cloud Storage
+
+[Article](https://tensorflow.rstudio.com/tools/cloudml/articles/storage.html).
+
+For now, it's not that interesting to follow the steps in the article. It doesn't look like anything should go wrong (famous last words, I know :)).
+
+# Deploying models
+
+[Article](https://tensorflow.rstudio.com/tools/cloudml/articles/deployment.html).
+
+Final article in tutorial series is about how to deploy models to Google Cloud. If you've followed the steps above then you'll have couple of models that are ready to be deployed already (e.g., MNIST example saves models). Then deploying can be done from a local folder by specifying *folder* where model is saved.
+
+I didn't have any issues with deploying the model as it was described in the article. I did have a problem with getting the image out of MNIST dataset (in the article it is `mnist_image <- keras::dataset_mnist()$train$x[1,,]`). At least for me, this command fails with `object of type 'environment' is not subsettable`, so I don't know if prediction works or not, but I think it should work anyways.
+
+# Conclusion
+
+Working with Google Cloud via `cloudml` didn't present serious issues. There are few kinks here and there, but overall I didn't find anything out of the ordinary. Next step is to try to go beyond tutorial examples and actually use this infrastructure on a more challenging project.

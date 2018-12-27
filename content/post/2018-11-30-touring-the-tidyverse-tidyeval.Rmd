@@ -1,0 +1,28 @@
+---
+title: 'Touring the tidyverse: tidyeval'
+author: Misha Balyasin
+date: '2018-11-30'
+slug: touring-the-tidyverse-tidyeval
+categories:
+  - R
+tags:
+  - tidyverse
+  - talks
+subtitle: ''
+---
+
+Another stop on the journey through the `tidyverse` and this time it's one of the most interesting and mysterious corners (I think) of the entire suite of `tidyverse` packages - tidy evaluation. My goal for the talk was to introduce [ideas](https://www.youtube.com/watch?v=nERXS3ssntw) behind tidy evaluation in an interactive manner. To do that, I've used mostly exactly the same approach as Lionel Henry (main contributor to `rlang` that hosts tidy evaluation) outlined in this WIP book creatively called ["Tidy evaluation"](https://tidyeval.tidyverse.org/).
+
+As usual, R markdown format of the presentation is [here](https://github.com/romatik/touring_the_tidyverse/blob/master/4_tidyeval.Rmd), code I've used during presentation is [here](https://github.com/romatik/touring_the_tidyverse/tree/master/tideval).
+
+All talks in the series:
+
+1. `tidyr` - https://www.mishabalyasin.com/2018/05/27/touring-the-tidyverse-tidyr/
+1. `dplyr` - https://www.mishabalyasin.com/2018/07/26/touring-the-tidyverse-dplyr/
+1. `purrr` - https://www.mishabalyasin.com/2018/10/24/touring-the-tidyverse-purrr/
+1. `tidyeval` - https://www.mishabalyasin.com/2018/11/30/touring-the-tidyverse-tidyeval/
+
+
+```{r, echo=FALSE}
+knitr::include_url("https://www.mishabalyasin.com/slides/4_tidyeval.html#1")
+```

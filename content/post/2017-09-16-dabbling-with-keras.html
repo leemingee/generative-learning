@@ -1,0 +1,31 @@
+---
+title: Dabbling with deep learning
+author: Misha Balyasin
+date: '2017-09-16'
+slug: dabbling-with-deep learning
+categories: []
+tags:
+  - keras
+  - tensorflow
+  - deepdream
+  - deep learning
+  - neural net
+---
+
+
+
+<p>I like trying different things just to see how difficult/easy it is. One of the things I’ve been meaning to try for quite some time is deep learning, specifically <code>keras</code> package by RStudio. There are many tutorials about <code>keras</code> around, but I’ve just followed couple of tutorials and vignettes that they have on their <a href="https://cran.r-project.org/web/packages/keras/index.html">CRAN page</a>. The interesting thing to me is the fact that, apparently, <code>keras</code> is no longer the cool kid on the block and all the rage is now behind <a href="http://www.fast.ai/2017/09/08/introducing-pytorch-for-fastai/"><code>pytorch</code></a>.</p>
+<p>Anyways, I was pleasantly surprised just how uneventful most of the setup was for keras. <a href="https://cran.r-project.org/web/packages/keras/vignettes/getting_started.html">Getting started</a> vignette shows the steps that I’ve followed and had zero problems with. The only issue is if you want to use GPU in order to train your nets, you’ll have jump through couple of hoops. For example, if you are on Ubuntu, NVidia only supports 14.04 and 16.04 versions to use GPU. So, at some point I want to try and get it to work. If I do I’ll certainly write about it not to forget how to do it :).</p>
+<p>All of the <a href="https://keras.rstudio.com/articles/examples/index.html">examples</a> that I’ve tried ran without any issue. The only one I’m not sure is finished is the <a href="https://keras.rstudio.com/articles/examples/mnist_transfer_cnn.html">example</a> with transfer. Other than that all of them worked.</p>
+<p>The only interesting output of this tryout is the example about deep dreaming. Specifically, I’ve applied their approach to one picture I’ve found online. The setup suggest using picture with 600x600 dimensions and to use GPU. Since I didn’t manage to get GPU to work, I’ve played around with just CPU. If you downsample the picture to 600x600 it’ll probably take around 5 minutes to go through 5 epochs and get somewhat interesting picture. I’ve tried to increase the dimensions to 1920x1080 and then it took almost 30 minutes for the same 5 epochs. I wonder, how long it’ll take with GPU…</p>
+<p>Original:</p>
+<div class="figure">
+<img src="/img/deep_dream_original.jpg" />
+
+</div>
+<p>Result:</p>
+<div class="figure">
+<img src="/img/deep_dream_result.png" />
+
+</div>
+<p>Overall, working with those toy-examples felt like there is not much to deep learning at all. Of course, that’s highly misleading, but at the same time sort of problems that you can solve with deep learning (and with <code>keras</code> package by extension) are fairly interesting and language is expressive enough to create this illusion of Lego-like blocks. So, in conclusion, I’ll try to do something more interesting using this approach and report back the result.</p>

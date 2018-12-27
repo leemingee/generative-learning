@@ -1,0 +1,20 @@
+---
+title: Category theory via graphical linear algebra
+author: Misha Balyasin
+date: '2018-02-18'
+slug: category-theory-via-graphical-linear-algebra
+categories:
+  - general
+tags:
+  - category theory
+---
+
+I was reading through Hacker News (as I often do) and came across the link with the name "Graphical Linear Algebra". I tend to click on most links at the front page and this link wasn't an exception. What I found there is a [blog](https://graphicallinearalgebra.net/) by Pawel Sobocinski where he talks about Graphical Linear Algebra (surprise) and how it's application.
+
+Very early in the series he mentions that GLA is connected to category theory -- area of mathematics that I've been trying to understand for a loooong time given how useful it is for functional programming. Since R is very much a functional language I've decided to read on and wasn't dissapointed. 
+
+The blog is really interesting and full of very clear explanations of what GLA is and why it can be useful. For example, making any dish can be though of as a composition of simple "functions" (e.g., separate egg white and yolk) that together produce a "result" (e.g., cake). This may sound silly, but using similar instruments is crucial in concurrent programming since it allows to think about parallel processing in principled terms and makes race conditions and byzanthine logic of dealing with corner cases less likely.
+
+What I specifically enjoyed is that it starts from simple concepts and builds on top of them to get to points that are not obvious for me. For example, you can think about matrix multiplication in the frame of category theory, e.g., in terms like composition and monoids (another thing that I keep trying to understand).
+
+All in all I was (and still am since I'm going through the series at the moment) delighted to have this link on the front page of Hacker News today :). 

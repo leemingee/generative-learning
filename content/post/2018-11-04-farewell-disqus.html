@@ -1,0 +1,24 @@
+---
+title: Farewell Disqus, hello Staticman!
+author: Misha Balyasin
+date: '2018-11-04'
+categories:
+  - meta
+slug: farewell-disqus
+---
+
+
+
+<p>Back in <a href="https://www.mishabalyasin.com/2018/03/03/ethics-in-data-science/">March</a> I’ve decided to delete integration with Google Analytics for the simple reason I never used it and therefore it had zero utility for me. All the while almighty Google was getting even more data about everyone. This proved to be a good decision since I never even had a thought about re-enabling it back up.</p>
+<p>However, one thing that I mentioned then was still bugging me:</p>
+<blockquote>
+<p>Next on the chopping block is Disqus integration. I even have couple of links saved with possible alternatives so once I’ll manage to have some sort of comments section without too many hoops I’ll drop this integration as well</p>
+</blockquote>
+<p>I’m happy to say that I’ve finally found a way without “too many hoops” to enable commenting on this blog. The name of this tool is <a href="https://staticman.net/">Staticman</a> and true to its name it actually leverages the staticness to have (almost) zero hassle setup for your blog.</p>
+<p>For steps on how to do it I’ve followed <a href="https://www.datascienceblog.net/post/other/staticman_comments/">this blog-post</a> by fellow R user Matthias Döring, if you were thinking to do the same. He also explains the reason behind a need to even bother with self-hosting.</p>
+<p>Couple of notes about his steps that I had to solve on the way:</p>
+<ol style="list-style-type: decimal">
+<li>His second step is labelled “Create a GitHub token for this account, allowing API/write access” where “this” refers to a GitHub account that you create specifically for Staticman integration. To me it read that this token should be created for this user, while in fact it should be a token from the account where your blog is hosted. Also, write access means <code>repo</code> level privileges. I was a bit confused since <code>repo</code> level only mentioned private repos, but I guess public repos are included as well.</li>
+<li>95% of changes one needs to enable Staticman I’ve managed to keep to one <a href="https://github.com/romatik/netlify-blog/commit/3425f2c7fd25200986df7b8207d52cea3f34cb07">commit</a>, so if you are feeling stuck, this can be a good place to try to get unstuck. Two subsequent commits were needed to fix all the little things required for successful integration.</li>
+</ol>
+<p>Finally, I’d like to thank everyone who used Disqus to comment on my blog. There were 4 comments in total, so I hope you forgive me for this decision since none of them are visible from today. On the other hand, you can comment now without any sign-up (I will keep <code>moderate: true</code> for now meaning that I’ll have to approve each new comment), so that’s positive.</p>

@@ -1,0 +1,49 @@
+---
+title: Keeping writing monkey off my back
+author: Misha Balyasin
+date: '2017-07-24'
+slug: writing-monkey
+categories:
+  - R
+  - meta
+tags:
+  - interactive
+---
+
+Apparently, it is not possible to embed interactive vizualization in Github Pages. At least, according to this [post](https://randomjohn.github.io/r-maps-with-leaflet/) I've came across. I'm not entirely sure that this is true, since, for [example](http://hafen.github.io/trelliscopejs-demo/housing/) this seems to work just fine. 
+
+Most likely it is technically possible, but, as I was saying [before](http://www.mishabalyasin.com/2017/07/23/blogdown-netlify/), having to deal with all of those dependencies is exactly why I didn't want to blog in the first place. Writing something (conceptually) simple would end up in a 3-4 hour hackfest where I fight the tool rather than actually doing anything productive. For some that is interesting, but for "writing monkey" on my back that was a perfect excuse to stay put.
+
+It is also fitting that my next post will be about interactive vizualizations (and vizualizations in general), so I've decided to try it here, just to see whether it is as seamless as other things.
+
+For that, I'll use probably my favorite package that for some reason is not used as widely as it deserves - [Trelliscope](https://github.com/hafen/trelliscopejs/). 
+
+I'm only using the most basic example to demonstrate functionality:
+
+```{r}
+library(trelliscopejs)
+library(ggplot2)
+library(gapminder)
+
+qplot(year, lifeExp, data = gapminder) +
+  xlim(1948, 2011) + ylim(10, 95) + theme_bw() +
+  facet_trelliscope(~ country + continent, nrow = 2, ncol = 7, width = 300, self_contained = TRUE)
+```
+
+And a bit of leaflet since it was used in the post that sparked this in the first place:
+
+```{r}
+# Example from https://rstudio.github.io/leaflet/
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+m  # Print the map
+```
+
+As you can see, both Trelliscope and Leaflet work out of the box without any hand-waving. Granted, Trelliscope looks a bit odd since there are some issues with (I guess) CSS/Javascript. But the main reason I would use it in the first place (interactivity) is still there. I'll update the post if I find a solution to make it look better.
+
+So, as far as keeping my writing monkey as far away from my back as possible, interactive graphs in `blogdown` seem to work just fine.
+
+**Update**: It looks like I was right about CSS/Javascript and changing theme made the problem with Trelliscope widget go away. As an aside, in the end I've ended up with exactly the same theme I've had on Github Pages, but this time it is in Hugo :).

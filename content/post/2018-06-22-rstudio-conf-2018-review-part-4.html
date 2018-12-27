@@ -1,0 +1,57 @@
+---
+title: 'rstudio::conf 2018 Review: Part 4'
+author: Misha Balyasin
+date: '2018-06-25'
+categories:
+  - R
+tags:
+  - conference
+  - overview
+  - rstudioconf
+slug: rstudio-conf-2018-review-part-4
+---
+
+
+
+<p>This is fourth and final part of the overview for rstudio::conf2018. It took longer than I’ve anticipated, but at least I’ve finished before rstudio::conf2019 :).</p>
+<p>Part 1 is <a href="https://www.mishabalyasin.com/2018/05/26/rstudio-conf-2018-review-part-1/">here</a></p>
+<p>Part 2 is <a href="https://www.mishabalyasin.com/2018/06/03/rstudio-conf-2018-review-part-2/">here</a></p>
+<p>Part 3 is <a href="https://www.mishabalyasin.com/2018/06/22/rstudio-conf-2018-review-part-3/">here</a></p>
+<ol start="31" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/modeling-in-the-tidyverse/">Modeling in the Tidyverse by Max Kuhn</a>.</li>
+</ol>
+<p>This talk is an overview of the roadmap for the modeling packages in the tidyverse. The main idea is quite straightforward. Specifically, the suite of packages for modeling should be seen as a way to specify what you want in a declarative way and delay actual work as much as possible. The reason why this is important is that makes it possible to have a declarative syntax for model specification, while actual engine can be anything at all - TensorFlow, Python, Stan, R, Spark etc. In that sense it similar to pairing of <code>dbplyr</code> and SQL engines.</p>
+<p>I’m certainly looking forward to more developments in that area.</p>
+<ol start="32" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/tidycf-turning-analysis-on-its-head-by-turning-cashflows-on-their-sides/">tidycf: Turning analysis on its head by turning cashflows on their sides by Emily Riederer</a>.</li>
+</ol>
+<p>This talk is a case-study where Capital One bank introduced tidyverse in order to standardize and improve workflow of their analysts. It provides an interesting view of how one can achieve similar results in a different setting.</p>
+<ol start="33" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/creating-interactive-web-graphics-suitable-for-exploratory-data-analysis/">Creating interactive web graphics suitable for exploratory data analysis by Carson Sievert</a>.</li>
+</ol>
+<p>Very interesting talk by Carson about how <code>plotly</code> can be used to increase velocity of insight generation into data. With interactive graphics, analyst can ask and answer questions from the data rapidly, thus allowing her to create a better mental model of the process that is currently under investigation.</p>
+<p>Carson is a maintainer of <code>plotly</code> package and he also published a book where he documented multiple ways <code>plotly</code> can be used to create interactive web graphics.</p>
+<ol start="34" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/data-rectangling/">Data rectangling by Jenny Bryan</a>.</li>
+</ol>
+<p>Data rectangling as presented by Jenny Bryan is an art of wrangling data while staying inside of cozy confines of tibbles. It isn’t always obvious how certain operation can be done inside of a tibble, but <code>purrr</code> sure helps. Moreover, working with list-columns (and lists in general) is a very nice skill to have since lots of data can be in this form (most notably API calls to external web-services).</p>
+<ol start="35" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/an-assignment-operator-to-unpack-vectors-and-lists/">An assignment operator to unpack vectors and lists by Nathan Teetor</a>.</li>
+</ol>
+<p>Unpacking vectors is a way to put multiple objects on the left-hand side of <code>&lt;-</code> operator. It is supported natively, by, e.g., Python, so often times people tend to miss it when they move to R. <code>zeallot</code> is a package that fixes this situation by providing <code>%&lt;-%</code> operator that gives you this facility. Another implementation is available in <code>dub</code> <a href="https://github.com/egnha/dub">package</a> by my former colleague Eugene Ha.</p>
+<ol start="36" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/debugging-techniques-in-rstudio/">Debugging techniques in RStudio by Amanda Gadrow</a>.</li>
+</ol>
+<p>Couple of interesting tidbits of information about debugging in RStudio (and in R in general). Amanda talked about debugging in source files, packages, and Shiny applications. They all share certain things about debugging, but also have differences that needs to be kept in mind to make your life easier whenever there is a need for deep dive on misbehaving functions.</p>
+<ol start="37" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/beyond-r-using-r-markdown-with-python-sql-bash-and-more/">Beyond R: Using R Markdown with python, sql, bash, and more by Aaron Berg</a>.</li>
+</ol>
+<p>This talk goes over using R in three using environments: SQL, Bash, and Python. The main point that Aaron made is that this polyglot nature of R makes it a rather nifty tool to make it a centralized place to foster collaboration in the, perhaps, multilingual team you might have at your workplace.</p>
+<ol start="38" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/branding-and-automating-your-work-with-r-markdown/">Branding and automating your work with R Markdown by Daniel Hadley</a>.</li>
+</ol>
+<p>Practical talk outlining steps of creating branded documents (Word, PDF, slides, PPT, etc). I’ve had to do very similar things multiple times already and my experience is aligned with what they went through. Once you can abstract away to have a template, creating multiple reports with all sorts of seemingly complicated things is not as complicated. It for sure beats creating all of those things by hand in a Word document.</p>
+<ol start="39" style="list-style-type: decimal">
+<li><a href="https://www.rstudio.com/resources/videos/tidy-eval-programming-with-dplyr-tidyr-and-ggplot2/">Tidy eval: Programming with dplyr, tidyr, and ggplot2 by Hadley Wickham</a>.</li>
+</ol>
+<p>Tidy eval is a very interesting topic in its own right. On top of that it tends to be fairly complicated to wrap your mind around, so there are probably multiple talks that need to be given in order for the community to have a solid grasp on the idea. As explained in this talk, one of the biggest reasons tidy eval is even needed is because everything in R is an expression (with its corresponding AST) and that allows anyone to modify AST any way you please. SQL &lt;&gt; <code>dplyr</code> interaction is a good example of why this is useful. With the talk from Max Kuhn it can be also useful in modeling. Moreover, this idea comes all the way from 1940’s and already proven to work in, e.g., Lisp. So, while tidy eval might indeed be a bit complicated, the payoff is also quite large.</p>

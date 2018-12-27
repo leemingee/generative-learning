@@ -1,0 +1,369 @@
+---
+title: Finding controversial and interesting posts on Hacker News
+author: Misha Balyasin
+date: '2017-11-19'
+slug: interesting-controversy
+categories: []
+tags:
+  - R
+  - BigQuery
+  - sql
+---
+
+
+
+<p>I’ve been an avid reader of <a href="https://news.ycombinator.com/">Hacker News</a> for the past year or so. If you don’t know what it is, in few words it’s an aggregator that is centered around technology news and everything surrounding them. So, not only news about the latest and greatest frameworks to use, but also any news that community finds interesting. Stories are upvoted to the front page that you see when you go the link above. It has been going since 2006.</p>
+<p>As I’m reading it, I started noticing certain threads in types of news that make to the front page. There are couple of posts already on various aspects of Hacker News ( <a href="http://varianceexplained.org/r/hn-trends/">David Robinson’s post</a>, <a href="https://juliasilge.com/blog/tidy-word-vectors/">Julia Silge post</a> - she also mentioned <code>bigrquery</code> package that I’ll use too), but what I wanted to take a look is about distribution of points that each story gets and number of comments under it.</p>
+<p>You see, I have this theory that controversial posts tend to attract many more comments than an average post, while interesting posts tend to be upvoted quite highly without many comments. I think, it is obvious that controversial posts tend to have quite a few comments since people tend to go into word battles with each other trying to prove a point ( <a href="https://www.xkcd.com/386/">“Someone is wrong on the Internet”</a> ).</p>
+<p>What makes an interesting post is very much open to interpretation, but I explain it by the fact that some posts are just good and there is nothing one needs to comment on them, so they are just upvoted.</p>
+<p>As a sidenote, by calling some posts “interesting” I’m not saying that other posts are not interesting, but rather that posts with this characteristic tend to be different from the “average” ones.</p>
+<p>So, the purpose of this post is to explore my intuition and to also try out <code>bigrquery</code> package.</p>
+<p>To operationalize my intuition, I was considering multiple things, but at the end I’ve come down to a very simple metric - ratio of story’s score to number of comments. To make sure that there as few outliers as possible, I’ve also decided to use only stories with 50+ points. This, of course, is arbitrary, but what can you do, amirite?</p>
+<p>Without looking into data (you have to trust me that I didn’t) I would have couple of observations that I want to check:</p>
+<ol style="list-style-type: decimal">
+<li>Most posts have relatively standard distribution of points to comments ratio. I would say that it is quite common for posts on the front page to have around 150-200 points with 70-100 comments. So, ratio is 2-3 for most posts.</li>
+<li>This ratio is also distributed normally.</li>
+<li>Controversial posts will have ratio close to 1 or below.</li>
+<li>Interesting posts will have ratio 5 or higher.</li>
+</ol>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>As I’ve mentioned, Google provides access to all Hacker News posts and comments via BigQuery. You can use it via <a href="https://www.rdocumentation.org/packages/bigrquery/versions/0.4.1"><code>bigrquery</code></a> package by (surprise!) Hadley Wickham. The Readme of the package provides with clear enough instructions on how to do it.</p>
+<p>The only slight wrinkle to it is the fact that I’ve stored the name of the project in the vault using <code>secret</code> package (you can read about how do it <a href="https://www.mishabalyasin.com/2017/11/05/overview-secret-spelling/">here</a>). It’s not actually required since authentication is done online anyways, but I think it’s a good idea to do it since in cases where you do need to store some API keys, it’ll be a natural thing to do.</p>
+<pre class="r"><code>library(tidyverse)
+library(bigrquery)
+library(secret)
+library(ggthemes)</code></pre>
+<p>Getting the “secret” name of the project:</p>
+<pre class="r"><code>vault &lt;- file.path(&quot;/home/misha/R/projects&quot;, &quot;.vault&quot;)
+key_dir &lt;- file.path(&quot;~/.ssh&quot;) 
+my_private_key &lt;- file.path(key_dir, &quot;secret_example&quot;)
+project &lt;- get_secret(&quot;secret_two&quot;, key = my_private_key, vault = vault)</code></pre>
+<p>Now I can get the stories I need using simple SQL query:</p>
+<pre class="r"><code>sql &lt;- &quot;SELECT * FROM [bigquery-public-data:hacker_news.full] WHERE score &gt; 50&quot;
+stories &lt;- query_exec(sql, project = project, max_pages = Inf)</code></pre>
+<p>I’m obviously not going to run this query over and over again, so I’ve cached it and retrieving it from cache is just:</p>
+<pre class="r"><code>stories &lt;- readRDS(&quot;/home/misha/R/projects/hackernews/stories_cache.rds&quot;) %&gt;%
+  dplyr::filter(descendants &gt; 0) %&gt;%
+  dplyr::filter(!is.na(descendants)) %&gt;%
+  dplyr::mutate(ratio = score/descendants) </code></pre>
+<p>I’ve also cleaned the dataframe a bit to have only non-missing and positive descendants.</p>
+</div>
+<div id="eda" class="section level1">
+<h1>EDA</h1>
+<p>Let’s look at what kind of data we have:</p>
+<pre class="r"><code>str(stories)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    131827 obs. of  15 variables:
+##  $ by         : chr  &quot;Garbage&quot; &quot;teng&quot; &quot;newman314&quot; &quot;ghosh&quot; ...
+##  $ score      : int  98 75 107 183 119 142 251 81 170 87 ...
+##  $ time       : int  1352800497 1363053023 1484596441 1485235710 1282419418 1424670541 1379623273 1421604151 1502125673 1454162856 ...
+##  $ timestamp  : POSIXct, format: &quot;2012-11-13 09:54:57&quot; &quot;2013-03-12 01:50:23&quot; ...
+##  $ title      : chr  &quot;Netflix Open Source&quot; &quot;Strikingly Creates Simple, Beautiful Web Sites in Minutes&quot; &quot;With Google&#39;s RAISR, images can be up to 75% smaller without losing detail&quot; &quot;Unexpected Consequences of Self-Driving Cars&quot; ...
+##  $ type       : chr  &quot;story&quot; &quot;story&quot; &quot;story&quot; &quot;story&quot; ...
+##  $ url        : chr  &quot;http://netflix.github.com/&quot; &quot;http://lifehacker.com/5989963/strikingly-creates-simple-beautiful-web-sites-in-minutes&quot; &quot;http://www.pcmag.com/news/351027/google-raisr-intelligently-makes-low-res-images-high-quality&quot; &quot;http://rodneybrooks.com/unexpected-consequences-of-self-driving-cars/&quot; ...
+##  $ text       : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ parent     : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ deleted    : logi  NA NA NA NA NA NA ...
+##  $ dead       : logi  NA NA NA NA NA NA ...
+##  $ descendants: int  50 44 51 209 52 32 228 71 80 62 ...
+##  $ id         : int  4777242 5359507 13412464 13469038 1623482 9092781 6414162 8908197 14949107 11001833 ...
+##  $ ranking    : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ ratio      : num  1.96 1.705 2.098 0.876 2.288 ...</code></pre>
+<p>There are 134303 stories in total. The most interesting columns for me are <code>score</code>, <code>title</code> and <code>descendants</code> (this indicates number of comments in the story).</p>
+<p>Distribution of scores over time:</p>
+<pre class="r"><code>stories %&gt;%
+  ggplot(., aes(x = timestamp, y = score)) +
+    geom_smooth() +
+    scale_x_datetime(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;) +
+    theme_solarized()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="/post/2017-11-19-finding-controversial-and-interesting-posts-on-hacker-news_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Distribution of comments over time:</p>
+<pre class="r"><code>stories %&gt;%
+  ggplot(., aes(x = timestamp, y = descendants)) +
+    geom_smooth() +
+    scale_x_datetime(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;) +
+    theme_solarized()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39;</code></pre>
+<p><img src="/post/2017-11-19-finding-controversial-and-interesting-posts-on-hacker-news_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Indeed, for both scores and number of comments there is an upward trend. That is not surprising considering that site itself is probably growing in popularity. These 2 graphs also help in answering my first question. At least in the last couple of years, on average posts get 150-170 points and 70-100 comments.</p>
+<p>Now to other questions I’ve posed in the beginning.</p>
+</div>
+<div id="distribution-of-ratio" class="section level1">
+<h1>Distribution of ratio</h1>
+<pre class="r"><code>stories %&gt;%
+  ggplot(., aes(x = ratio)) +
+    geom_histogram(bins = 100) +
+    theme_solarized()</code></pre>
+<p><img src="/post/2017-11-19-finding-controversial-and-interesting-posts-on-hacker-news_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>It looks like there are some really interesting stories based on my criteria :). Instead of filtering the stories with a very high ratio, I’ll instead plot a log of the ratio:</p>
+<pre class="r"><code>stories %&gt;%
+  ggplot(., aes(x = log(ratio))) +
+    geom_density() +
+    theme_solarized()</code></pre>
+<p><img src="/post/2017-11-19-finding-controversial-and-interesting-posts-on-hacker-news_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Log distribution of the ratio is indeed normal. So, I wasn’t completely correct in my second assumption.</p>
+<pre class="r"><code>stories %&gt;%
+  dplyr::select(ratio) %&gt;%
+  summary()</code></pre>
+<pre><code>##      ratio         
+##  Min.   :  0.1652  
+##  1st Qu.:  1.5077  
+##  Median :  2.4348  
+##  Mean   :  3.8337  
+##  3rd Qu.:  4.0968  
+##  Max.   :398.0000</code></pre>
+</div>
+<div id="controversial-posts" class="section level1">
+<h1>Controversial posts</h1>
+<p>I’ve defined controversial posts to be all posts where ratio is below 1.</p>
+<pre class="r"><code>stories %&gt;%
+  dplyr::filter(ratio &lt; 1) %&gt;%
+  nrow()</code></pre>
+<pre><code>## [1] 11798</code></pre>
+<p>In total, there are 11798 (or 9%) such stories. For the sake of demonstration, I’ll only show top 20 titles and urls for posts with the most controversial ratio.</p>
+<pre class="r"><code>stories %&gt;%
+  dplyr::select(title, url, ratio) %&gt;%
+  dplyr::arrange(ratio) %&gt;%
+  dplyr::top_n(-20) %&gt;%
+  knitr::kable()</code></pre>
+<pre><code>## Selecting by ratio</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">title</th>
+<th align="left">url</th>
+<th align="right">ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Please tell us what features you’d like in news.ycombinator</td>
+<td align="left"></td>
+<td align="right">0.1651955</td>
+</tr>
+<tr class="even">
+<td align="left">Microsoft is Dead</td>
+<td align="left"><a href="http://www.paulgraham.com/microsoft.html" class="uri">http://www.paulgraham.com/microsoft.html</a></td>
+<td align="right">0.1730337</td>
+</tr>
+<tr class="odd">
+<td align="left">HN: share your unneeded Google Wave invites</td>
+<td align="left"></td>
+<td align="right">0.1958763</td>
+</tr>
+<tr class="even">
+<td align="left">Ask HN: Where do you live?</td>
+<td align="left"></td>
+<td align="right">0.2021661</td>
+</tr>
+<tr class="odd">
+<td align="left">Soaring Student Debt Prompts Calls for Relief</td>
+<td align="left"><a href="http://www.wsj.com/articles/soaring-student-debt-prompts-calls-for-relief-1473759003?mod=pls_whats_news_us_business_f" class="uri">http://www.wsj.com/articles/soaring-student-debt-prompts-calls-for-relief-1473759003?mod=pls_whats_news_us_business_f</a></td>
+<td align="right">0.2054264</td>
+</tr>
+<tr class="even">
+<td align="left">Inappropriate comments at pycon 2013 called out</td>
+<td align="left"><a href="https://twitter.com/adriarichards/status/313417655879102464/photo/1" class="uri">https://twitter.com/adriarichards/status/313417655879102464/photo/1</a></td>
+<td align="right">0.2205882</td>
+</tr>
+<tr class="odd">
+<td align="left">Poll: Where are you from?</td>
+<td align="left"></td>
+<td align="right">0.2208333</td>
+</tr>
+<tr class="even">
+<td align="left">Ask HN: What annoys you?</td>
+<td align="left"></td>
+<td align="right">0.2347826</td>
+</tr>
+<tr class="odd">
+<td align="left">Why Do Obese Patients Get Worse Care? Many Doctors Don’t See Past the Fat</td>
+<td align="left"><a href="http://www.nytimes.com/2016/09/26/health/obese-patients-health-care.html?hp&amp;action=click&amp;pgtype=Homepage&amp;clickSource=story-heading&amp;module=second-column-region&amp;region=top-news&amp;WT.nav=top-news&amp;_r=0" class="uri">http://www.nytimes.com/2016/09/26/health/obese-patients-health-care.html?hp&amp;action=click&amp;pgtype=Homepage&amp;clickSource=story-heading&amp;module=second-column-region&amp;region=top-news&amp;WT.nav=top-news&amp;_r=0</a></td>
+<td align="right">0.2355556</td>
+</tr>
+<tr class="even">
+<td align="left">Ask HN: Whom do you admire most?</td>
+<td align="left"></td>
+<td align="right">0.2393162</td>
+</tr>
+<tr class="odd">
+<td align="left">In Fed and Out, Many Now Think Inflation Helps</td>
+<td align="left"><a href="http://www.nytimes.com/2013/10/27/business/economy/in-fed-and-out-many-now-think-inflation-helps.html?pagewanted=all" class="uri">http://www.nytimes.com/2013/10/27/business/economy/in-fed-and-out-many-now-think-inflation-helps.html?pagewanted=all</a></td>
+<td align="right">0.2467532</td>
+</tr>
+<tr class="even">
+<td align="left">Americans Are Putting Billions More Than Usual in Their 401(k)s</td>
+<td align="left"><a href="https://www.bloomberg.com/news/articles/2017-01-04/americans-are-putting-billions-more-than-usual-in-their-401-k-s" class="uri">https://www.bloomberg.com/news/articles/2017-01-04/americans-are-putting-billions-more-than-usual-in-their-401-k-s</a></td>
+<td align="right">0.2544248</td>
+</tr>
+<tr class="odd">
+<td align="left">Reddit CEO Cracks Down on Abusive Content to Protect Users, Attract Advertisers</td>
+<td align="left"><a href="https://www.wsj.com/articles/reddit-ceo-cracks-down-on-abusive-content-to-protect-users-attract-advertisers-1510853654?mod=e2tw" class="uri">https://www.wsj.com/articles/reddit-ceo-cracks-down-on-abusive-content-to-protect-users-attract-advertisers-1510853654?mod=e2tw</a></td>
+<td align="right">0.2546917</td>
+</tr>
+<tr class="even">
+<td align="left">Ask HN: What do you drink?</td>
+<td align="left"></td>
+<td align="right">0.2581967</td>
+</tr>
+<tr class="odd">
+<td align="left">Ask HN: What are you reading right now?</td>
+<td align="left"></td>
+<td align="right">0.2651007</td>
+</tr>
+<tr class="even">
+<td align="left">Why i’m done wearing a helmet</td>
+<td align="left"><a href="http://www.bikinginmpls.com/im-done-wearing-helmet/" class="uri">http://www.bikinginmpls.com/im-done-wearing-helmet/</a></td>
+<td align="right">0.2669683</td>
+</tr>
+<tr class="odd">
+<td align="left">How Women Got Crowded Out of the Computing Revolution</td>
+<td align="left"><a href="https://www.bloomberg.com/view/articles/2017-08-19/how-women-got-crowded-out-of-the-computing-revolution" class="uri">https://www.bloomberg.com/view/articles/2017-08-19/how-women-got-crowded-out-of-the-computing-revolution</a></td>
+<td align="right">0.2723577</td>
+</tr>
+<tr class="even">
+<td align="left">YC Summer 2017 Invites/Rejections</td>
+<td align="left"></td>
+<td align="right">0.2738095</td>
+</tr>
+<tr class="odd">
+<td align="left">“A Statement with My View on Curtis Yarvin and Strange Loop”</td>
+<td align="left"><a href="https://s3.amazonaws.com/sl-notes/yarvin.txt" class="uri">https://s3.amazonaws.com/sl-notes/yarvin.txt</a></td>
+<td align="right">0.2771084</td>
+</tr>
+<tr class="even">
+<td align="left">Ask HN: What are you working on today?</td>
+<td align="left"></td>
+<td align="right">0.2774194</td>
+</tr>
+</tbody>
+</table>
+<p>I’ve forgotten about “Ask HN” posts and it is obvious that they are the most prevalent when it comes down to the metric I’ve chosen. But the rest of the post do look quite controversial, so I would say that my intuition is confirmed.</p>
+</div>
+<div id="interesting-posts" class="section level1">
+<h1>Interesting posts</h1>
+<p>Now to interesting posts:</p>
+<pre class="r"><code>stories %&gt;%
+  dplyr::select(title, url, ratio) %&gt;%
+  dplyr::arrange(ratio) %&gt;%
+  dplyr::top_n(20) %&gt;%
+  knitr::kable()</code></pre>
+<pre><code>## Selecting by ratio</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">title</th>
+<th align="left">url</th>
+<th align="right">ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ESO (European Southern Observatory) Announcing Unprecedented Discovery</td>
+<td align="left"><a href="https://www.eso.org/public/announcements/ann17071/" class="uri">https://www.eso.org/public/announcements/ann17071/</a></td>
+<td align="right">145.0</td>
+</tr>
+<tr class="even">
+<td align="left">Ritchie, Stroustrup, and Gosling interview</td>
+<td align="left"><a href="http://www.gotw.ca/publications/c_family_interview.htm" class="uri">http://www.gotw.ca/publications/c_family_interview.htm</a></td>
+<td align="right">146.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Fantasy author Pratchett dies aged 66</td>
+<td align="left"><a href="http://www.bbc.co.uk/news/entertainment-arts-31858156" class="uri">http://www.bbc.co.uk/news/entertainment-arts-31858156</a></td>
+<td align="right">152.0</td>
+</tr>
+<tr class="even">
+<td align="left">Introducing Kindle Oasis</td>
+<td align="left"><a href="http://www.amazon.com/New-Leather-Charging-High-Resolution-Includes/dp/B00REQKWGA" class="uri">http://www.amazon.com/New-Leather-Charging-High-Resolution-Includes/dp/B00REQKWGA</a></td>
+<td align="right">152.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Microsoft Open Sources .NET and Mono</td>
+<td align="left"><a href="http://tirania.org/blog/archive/2014/Nov-12.html" class="uri">http://tirania.org/blog/archive/2014/Nov-12.html</a></td>
+<td align="right">156.0</td>
+</tr>
+<tr class="even">
+<td align="left">Show HN: CoinMall Alpha: A Crypto Marketplace for Digital Goods</td>
+<td align="left"><a href="https://medium.com/@coinmallio/announcing-coinmall-alpha-db6e7f4659a6" class="uri">https://medium.com/@coinmallio/announcing-coinmall-alpha-db6e7f4659a6</a></td>
+<td align="right">156.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Tell HN: Google removes rust, Netflix, other GitHub repos after DMCA takedown</td>
+<td align="left"></td>
+<td align="right">163.0</td>
+</tr>
+<tr class="even">
+<td align="left">The DAO is currently being attacked, over 2M Ethereum missing so far</td>
+<td align="left"><a href="http://etherscan.io/address/0xbb9bc244d798123fde783fcc1c72d3bb8c189413" class="uri">http://etherscan.io/address/0xbb9bc244d798123fde783fcc1c72d3bb8c189413</a></td>
+<td align="right">188.5</td>
+</tr>
+<tr class="odd">
+<td align="left">Microsoft Surface Book</td>
+<td align="left"><a href="http://www.microsoft.com/surface/en-us/devices/surface-book" class="uri">http://www.microsoft.com/surface/en-us/devices/surface-book</a></td>
+<td align="right">190.0</td>
+</tr>
+<tr class="even">
+<td align="left">Dream of New Kind of Credit Union Is Extinguished by Bureaucracy</td>
+<td align="left"><a href="http://www.nytimes.com/2015/11/25/business/dealbook/dream-of-new-kind-of-credit-union-is-burdened-by-bureaucracy.html?_r=0" class="uri">http://www.nytimes.com/2015/11/25/business/dealbook/dream-of-new-kind-of-credit-union-is-burdened-by-bureaucracy.html?_r=0</a></td>
+<td align="right">190.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Dennis Ritchie RIP</td>
+<td align="left"><a href="https://lwn.net/Articles/462859/" class="uri">https://lwn.net/Articles/462859/</a></td>
+<td align="right">212.0</td>
+</tr>
+<tr class="even">
+<td align="left">Magic Mushroom Drug Lifts Depression in Human Trial</td>
+<td align="left"><a href="http://www.scientificamerican.com/article/magic-mushroom-drug-lifts-depression-in-human-trial/" class="uri">http://www.scientificamerican.com/article/magic-mushroom-drug-lifts-depression-in-human-trial/</a></td>
+<td align="right">223.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Shrinking to Zero: The Raspberry Pi Gets Smaller</td>
+<td align="left"><a href="http://www.bbc.co.uk/news/technology-34922561" class="uri">http://www.bbc.co.uk/news/technology-34922561</a></td>
+<td align="right">240.0</td>
+</tr>
+<tr class="even">
+<td align="left">Dennis Ritchie</td>
+<td align="left"><a href="http://en.wikipedia.org/wiki/Dennis_Ritchie" class="uri">http://en.wikipedia.org/wiki/Dennis_Ritchie</a></td>
+<td align="right">243.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Texas Student Is Under Police Investigation for Building a Clock</td>
+<td align="left"><a href="http://www.nytimes.com/2015/09/17/us/texas-student-is-under-police-investigation-for-building-a-clock.html" class="uri">http://www.nytimes.com/2015/09/17/us/texas-student-is-under-police-investigation-for-building-a-clock.html</a></td>
+<td align="right">269.0</td>
+</tr>
+<tr class="even">
+<td align="left">Bill Gates Makes Statement on Steve Jobs</td>
+<td align="left"><a href="https://plus.google.com/115658896387238242974/posts/QoHtWrjjQcE" class="uri">https://plus.google.com/115658896387238242974/posts/QoHtWrjjQcE</a></td>
+<td align="right">310.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Thanks, Steve</td>
+<td align="left"><a href="http://samaltman.com/thanks-steve" class="uri">http://samaltman.com/thanks-steve</a></td>
+<td align="right">335.0</td>
+</tr>
+<tr class="even">
+<td align="left">Beware: Windows 10 Signature Edition Blocks Installing Linux</td>
+<td align="left"><a href="http://fossboss.com/2016/09/21/windows-10-signature-edition-blocks-installing-linux/" class="uri">http://fossboss.com/2016/09/21/windows-10-signature-edition-blocks-installing-linux/</a></td>
+<td align="right">344.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Wikileaks’ Assange wins U.N. ruling on ’arbitrary detention“</td>
+<td align="left"><a href="http://uk.reuters.com/article/uk-ecuador-sweden-assange-idUKKCN0VD0BJ?utm_source=twitter" class="uri">http://uk.reuters.com/article/uk-ecuador-sweden-assange-idUKKCN0VD0BJ?utm_source=twitter</a></td>
+<td align="right">373.0</td>
+</tr>
+<tr class="even">
+<td align="left">SpaceX: “Landing confirmed”</td>
+<td align="left"><a href="https://twitter.com/spacex/status/728457165606780928" class="uri">https://twitter.com/spacex/status/728457165606780928</a></td>
+<td align="right">398.0</td>
+</tr>
+</tbody>
+</table>
+<p>Hm, I would say that here I’m a bit off. Posts with highest ratio seem to be posts about deaths of famous (to people at HN) people. In fact, most of the post are not necessarily interesting, they are rather posts where people don’t really have a lot to add to whatever the topic is, but yet topic is relevant to the community at large, so there are large number of upvotes with few comments.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>I think, all of us have intuition about one thing or another. I like that it is rather trivial (and yet interesting) to check whether one’s intuition is correct. And, hey, 2.5 out of 4 ain’t bad!</p>
+</div>

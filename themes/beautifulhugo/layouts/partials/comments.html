@@ -1,0 +1,3 @@
+{{ if and (ge (len .Site.Params.staticman_api) 1) (not (or .Site.Params.disable_comments .Params.disable_comments)) (not .Site.IsServer) }}
+	{{ template "partials/staticman_post_comment.html" . }}
+{{ end }}

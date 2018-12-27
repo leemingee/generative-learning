@@ -1,0 +1,24 @@
+---
+title: Docker, Rocker and other things
+author: Misha Balyasin
+date: '2017-08-20'
+slug: docker-rocker-and-other-things
+categories: []
+tags:
+  - docker
+  - rocker
+  - reproducible research
+---
+
+Continuing what I've started already with the post about [blogdown](https://www.mishabalyasin.com/2017/07/23/blogdown-netlify/) where I've advertised how easy it is to use `blogdown` for all you blogging needs, today I want to do the same about `Docker`. If you don't know what `Docker` is, there is a [video](https://sec.ch9.ms/ch9/27c6/eb231ad1-bc19-4465-b731-98d10e4827c6/AutomaticallyArchiving_mid.mp4) from [useR!2017](https://user2017.brussels/) that started the process for me and where [Daniel Nust](https://github.com/nuest) explains what it is and why you should care.
+
+But more specifically, for hands-on [tutorial](http://ropenscilabs.github.io/r-docker-tutorial/) I went with [ROpenSci](https://ropensci.org/) tutorial. Overall, it is quite good, but I did come across couple of things I wanted others to avoid so if you are thinking about following the tutorial, here is a very short list of things I've noticed to be a little bit off in the tutorial:
+
+
+1. I've experienced some weird hangs while running the docker images. I'm fairly certain it has little to do with the actual image, but the only way to unhang is `docker kill <container_id>` and then restart the image with `sudo docker run --rm -p 8787:8787 -v /home/misha/R/projects/rocker-tutorial:/home/rstudio/rocker-tutorial verse_gapminder`.
+
+2. `docker login` no longer needs/accepts email. Putting just your username is enough for it to ask your password. You can also add your password to `login`, but it'll be in plain text, so maybe not a great idea.
+
+3. Tutorial is making a refence at multiple points to a file with location `data/gapminder-FiveYearData.csv`. I guess I've missed the point where it was created, so I didn't have it. Specifically, when I've got to the part with `ADD` in `Dockerfile` I've came across the problem that since I don't have that file I wasn't able to add it into the build process. On the bright side, I was forced to look into the docker build process a bit more and came across this [blog](http://kimh.github.io/blog/en/docker/gotchas-in-writing-dockerfile-en/) where author talks about `context`. In short, everything in the same folder as `Dockerfile` will be added to it's context. That means that using `ADD file.txt` will only succeed if `file.txt` is inside the same folder as `Dockerfile`. So, I've just copied one file to the same folder and used `ADD script.r /home/rstudio/` and then used `sudo docker build -t my-r-image .` successfuly.
+
+Other than that I didn't have any issues with following the tutorial and after following it, `Docker` definitely is less daunting than it used to be.

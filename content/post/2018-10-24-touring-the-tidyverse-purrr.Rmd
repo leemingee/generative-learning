@@ -1,0 +1,27 @@
+---
+title: 'Touring the tidyverse: purrr'
+author: Misha Balyasin
+date: '2018-10-24'
+slug: touring-the-tidyverse-purrr
+categories:
+  - R
+tags:
+  - tidyverse
+subtitle: ''
+---
+
+Another R meetup, another talk about tidyverse. This time I've talked about `purrr`. I really like this package, but I do have a feeling that I didn't present in the best light possible. I certainly could have prepared a couple more examples that showcase why this package is so awesome and what kind of workflow it allows to create. To pat myself on the back a bit, it was a good idea to anticipate that it would take a bit longer than I've planned and to put "interesting" parts of `purrr` first. We didn't have time to go over utilities in `purrr`, but I do believe that they are quite self-explanatory, so hopefully no issues with them.
+
+R markdown format of the presentation is [here](https://github.com/romatik/touring_the_tidyverse/blob/master/3_purrr.Rmd), code I've used during presentation is [here](https://github.com/romatik/touring_the_tidyverse/tree/master/purrr).
+
+All talks in the series:
+
+1. `tidyr` - https://www.mishabalyasin.com/2018/05/27/touring-the-tidyverse-tidyr/
+1. `dplyr` - https://www.mishabalyasin.com/2018/07/26/touring-the-tidyverse-dplyr/
+1. `purrr` - https://www.mishabalyasin.com/2018/10/24/touring-the-tidyverse-purrr/
+1. `tidyeval` - https://www.mishabalyasin.com/2018/11/30/touring-the-tidyverse-tidyeval/
+
+```{r, echo=FALSE}
+knitr::include_url("https://www.mishabalyasin.com/slides/3_purrr.html#1")
+```
+

@@ -1,0 +1,56 @@
+baseURL = "http://localhost:1313/"
+DefaultContentLanguage = "en"
+title = "Generative Learning"
+theme = "beautifulhugo"
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+[Params]
+    # Sets the meta tag description, usually reserved for the main page
+    subtitle = "This is how I rock"
+    # This will appear on the top left of the navigation bar
+    navbarTitle= "As a Machine Learning Engineer"
+    # set this to the section name if section is not post
+    viewMorePostLink= "/post/"
+    logo = "img/me.jpg"
+    dateFormat = "January 2, 2006"
+    commit = false
+    rss = true
+    comments = true
+    #[todo] the staticman_api setup
+    # staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/romatik/netlify-blog/master/comments"
+
+# Set up your menu items in the navigation bar
+# You can use identifier to prepend a font awesome icon to your text
+[[menu.main]]
+    name = "All posts"
+    url = "/post/"
+    identifier = "fa fa-newspaper-o"
+    weight = 1
+
+[[menu.main]]
+    name = "Categories"
+    url = "/categories"
+    weight = 2
+
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 3
+
+[[menu.main]]
+    name = "About"
+    url = "/about"
+    weight = 4
+
+[Author]
+  name = "Ming Li"
+  email = "leemingee1995@gmail.com"
+  github = "leemingee"
+  linkedin = "leemingee"
+  #stackoverflow = "users/XXXXXXX/username"

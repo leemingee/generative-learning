@@ -1,0 +1,140 @@
+---
+title: 'UseR 2017 review: Talks'
+author: Misha Balyasin
+date: '2017-09-09'
+slug: user-2017-review-talks
+categories: []
+tags:
+  - R
+  - user2017
+---
+
+There was a useR! conference in July, 2017. I've been meaning to go over some of the talks that are interesting (to me) for quite some time, so now that it is September in Berlin and weather is atrocious - what can be better than spending some time listening to interesting people talking about interesting things? Well, maybe many things, but whatever, I'm doing this.
+
+As a way of preparation I went over the schedule and wrote down every single talk that I thought is interesting. In total I've found 28 talks (for couple of talks I can't find videos or slides online). There were also couple of tutorials (those were on the order of 2-3 hours each), but this post is only about talks.
+
+The purpose of this post is mostly for me to have cliffnotes about each talk. Basically, I was going to watch them anyway, so why not also put links to them and few things I found interesting down for posterity? 
+
+1. [How we built a Shiny App for 700 users?](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/How-we-built-a-Shiny-App-for-700-users?term=How%20we%20built%20a%20Shiny%20App%20for%20700%20users%3F)
+
+The talk goes over the process of building the shiny app for a client. From the slides it looks like the app is for the internal users of the company that analyzes voice of the person on the other line of the phone. 
+
+What I found especially interesting is that the entire app (including infrastructure and deployment) has been developed by data scientists. In the end, they are using docker containers that are running behind the load balancer. 
+
+Another interesting tidbit is that they were forced to use data.table instead of dplyr since it provided them with 25 speed-up in lookup. I'm not sure why they were loading entire tables into memory instead of using a database, but perhaps there were some good reasons to do so.
+
+2. [Transformation Forests](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Transformation-Forests?term=Transformation%20Forests)
+
+The talk introduces the idea of a transformation forest which is an extension of random forest idea that is fairly well-known to most people.The main idea is that random forest and many other regression approaches predict "conditional mean of the target given predictors". With transformation forest what you get is the conditional distribution of the mean given predictors. That allows for much richer inference since you get to see higher moments of the distribution (variance, for example) and make conclusion based on that. 
+
+To understand that more fully there is a [paper](https://arxiv.org/abs/1701.02110).
+
+3. [A Benchmark of Open Source Tools for Machine Learning from R](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/A-Benchmark-of-Open-Source-Tools-for-Machine-Learning-from-R?term=A%20Benchmark%20of%20Open%20Source%20Tools%20for%20Machine%20Learning%20from%20R)
+
+This is a talk by Szilard Pafka of benchmarking fame. He has a github [repo](https://github.com/szilard/benchm-ml) where he collects result of his benchmarks. The bottom line is that not every tool is always going to work as advertised. In his talk, for example, he mentions Spark as a tool that gave him the most troubles AND produced the poorest results. This, of course, doesn't mean that Spark is not a tool that you should use, just that not to use tools just for the sake of using them.
+
+4. [Ensemble packages with user friendly interface: an added value for the R community](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Ensemble-packages-with-user-friendly-interface-an-added-value-for-the-R-community?term=Ensemble%20packages%20with%20user%20friendly%20interface%3A%20an%20added%20value%20for%20the%20R%20community)
+
+What I thought this talk was about is ensemble in Kaggle sense (i.e., mixing multiple models together to get higher accuracy). But in fact it is about putting similar packages together and creating GUI for people to use them with more ease. From the case-studies in the talk it looks like it can be useful for people who don't use/know R too much. I'm not in that group, so it's difficult to say how useful this approach is. At the same time, main idea of unifying packages together is definitely useful.
+
+5. [Interacting with databases from Shiny](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Interacting-with-databases-from-Shiny?term=Interacting%20with%20databases%20from%20Shiny)
+
+The talk is mostly about new package called [pool](https://github.com/rstudio/pool). The idea of the package is to bring db connections to Shiny. Since Shiny app tend to be a single process with multiple users you don't want to create a connection every time any user is doing a query to a remote database. So, instead, you are creating a pool of connections that are recycled a needed and maintained separately. This should make it faster for your users with only a little overhead.
+
+6. [mlrHyperopt: Effortless and collaborative hyperparameter optimization experiments](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/mlrHyperopt-Effortless-and-collaborative-hyperparameter-optimization-experiments?term=mlrHyperopt%3A%20Effortless%20and%20collaborative%20hyperparameter%20optimization%20experiments)
+
+The idea of the package is centered around hyperparameter optimization. What Jakob Richter implemented is an online database where anyone can store their hyperparameter optimization routines for any type of model. So the idea is that you can use this information to tune your own model without knowing what are the current state-of-the-art approach to tuning. For example, in random forest that is implemented in caret package the author decided that number of trees shouldn't be tuned. There is some research that shows that this is correct, but maybe some other research comes along and now you definitely should tune your number of trees in the forest. With the package in question, you can just download whatever approach is considered to be the best currently and use it for your case.
+
+7. [RL10N: Translating Error Messages & Warnings](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/RL10N-Translating-Error-Messages--Warnings?term=RL10N%3A%20Translating%20Error%20Messages%20%26%20Warnings)
+
+The talk is about actual translation. I thought it was more to understand what errors might mean since sometimes they are quite cryptic. Oh, well.
+
+8. [ShinyProxy](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/ShinyProxy?term=ShinyProxy)
+
+The talk is about (shock!) [Shiny Proxy](https://shinyproxy.io/). It is an alternative to Shiny Server Pro from RStudio. It uses Docker on the backend and Java to manage authentication of users. The basic idea is that you can create a Docker container with whatever Shiny app you want and then you can use Shiny Proxy to create a protected environment so that only people with enough rights get access to this app. The whole thing is open-sourced and in general can be used for multiple use-cases. And since it is based on Docker, everything that comes with it comes to you for free. So you can use Docker Swarm and all of the thingys.
+
+9. [Developing and deploying large scale Shiny applications for non-life insurance](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Developing-and-deploying-large-scale-Shiny-applications-for-non-life-insurance?term=Developing%20and%20deploying%20large%20scale%20Shiny%20applications%20for%20non-life%20insurance)
+
+Pretty cool presentation, but the main value is in the [tutorial](https://github.com/FrissAnalytics/shinyJsTutorials). It shows how to extend Shiny app to have slick looking stuff going with JavaScript and jQuery and all of those things. Definitely going to revisit it.
+
+And of course Docker all the things!
+
+10. [Stream processing with R in AWS](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Stream-processing-with-R-in-AWS?term=Stream%20processing%20with%20R%20in%20AWS)
+
+Very interesting talk that goes over a use-case to implement a stream processor in R in AWS. At the very end Gergely showed the example where there is a Kinesis produces with flights data that is processed by R and then stored in Redis. This is then used by Shiny app that reads from Redis every two seconds and updates the UI. I think, I'll try to replicate that at some point since it sound interesting.
+
+11. [Text mining, the tidy way](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Text-mining-the-tidy-way?term=Text%20mining%2C%20the%20tidy%20way)
+
+Julia Silge and David Robinson have [tidytext](https://cran.r-project.org/web/packages/tidytext/index.html) package that can be used for all sorts of things related to text mining. The talk is just an overview of things that are possible. But there are many blogs by both of them where they go in more details about how to do it.
+
+12. [We R a Community-making high quality courses for high education accessible for all:The >eR-Biostat initiative](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/We-R-a-Community-making-high-quality-courses-for-high-education-accessible-for-allThe-eR-Biostat-ini?term=We%20R%20a%20Community-making%20high%20quality%20courses%20for%20high%20education%20accessible%20for%20all%3AThe%20%3EeR-Biostat%20initiative)
+
+A project to develop courses to train students to use R with specific focus on biostatistics.
+
+13. [Beyond Prototyping: Best practices for R in critical enterprise environments](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Beyond-Prototyping-Best-practices-for-R-in-critical-enterprise-environments?term=Beyond%20Prototyping%3A%20Best%20practices%20for%20R%20in%20critical%20enterprise%20environments)
+
+Some practical advice of how to manage change in data scientist environment. Usual suspects: git, Docker, packrat, miniCRAN. One interesting idea is to introduce/have a title of Data Science Administrator who is responsible for package updates and making sure that there are no breaking changes.
+
+14. [Bayesian social network analysis with Bergm](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Bayesian-social-network-analysis-with-Bergm?term=Bayesian%20social%20network%20analysis%20with%20Bergm)
+
+Exponential random graph models with Bayesian implementation. Author created [Bergm](https://cran.r-project.org/package=Bergm) package that can be used for this purpose. This is not the topic I'm familiar with, but if I do come across something like this in future work I'll be sure to check it out more fully.
+
+15. [Can you keep a secret?](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Can-you-keep-a-secret?term=Can%20you%20keep%20a%20secret%3F)
+
+How do you deploy a package with AWS credentials? This is a fairly common question and since you really don't want to store them in plain text, there is this package that can encrypt and decrypt any information you want. And it is by Gabor Csardi, so it must be good :).
+
+16. [Clouds, Containers and R, towards a global hub for reproducible and collaborative data science](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Clouds-Containers-and-R-towards-a-global-hub-for-reproducible-and-collaborative-data-science?term=Clouds%2C%20Containers%20and%20R%2C%20towards%20a%20global%20hub%20for%20reproducible%20and%20collaborative%20data%20science)
+
+This talk is responsible for [this](https://www.mishabalyasin.com/2017/08/20/docker-rocker-and-other-things/) post, so not much more to add. And Docker all the things! 
+
+17. [IRT test equating with the R package equateIRT](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/IRT-test-equating-with-the-R-package-equateIRT?term=IRT%20test%20equating%20with%20the%20R%20package%20equateIRT)
+
+In my prevoius life I was a social scientist and IRT was one of the most exciting things I've came across. In many ways I see it as a gateway drug for some parts of social science into more rigorous world of scientific method.
+
+As for the talk -- it talks about how to connect multiple test forms in order to compare them between each other. More info on the [CRAN page](https://cran.r-project.org/package=equateIRT).
+
+18. [jug: Building Web APIs for R](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/jug-Building-Web-APIs-for-R?term=jug%3A%20Building%20Web%20APIs%20for%20R)
+
+Web framework for R that makes it easy to create API-endpoints. Very similar to plumber, but one cool thing that they introduced is the way to serve an API scalably.
+
+19. [Automatically archiving reproducible studies with Docker](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Automatically-archiving-reproducible-studies-with-Docker?term=Automatically%20archiving%20reproducible%20studies%20with%20Docker)
+
+DOCKER ALL THE THINGS!
+
+20. [ReinforcementLearning: A package for replicating human behavior in R](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/ReinforcementLearning-A-package-for-replicating-human-behavior-in-R?term=ReinforcementLearning%3A%20A%20package%20for%20replicating%20human%20behavior%20in%20R)
+
+Short introduction to reinforcement learning and even shorter introduction to a [package](https://github.com/nproellochs/ReinforcementLearning). I didn't have a case where I thought I could use reinforcement learning, but maybe some day...
+
+21. [The **renjin** package: Painless Just-in-time Compilation for High Performance R](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/The-renjin-package-Painless-Just-in-time-Compilation-for-High-Performance-R?term=The%20**renjin**%20package%3A%20Painless%20Just-in-time%20Compilation%20for%20High%20Performance%20R)
+
+Renjin is an open-source implementation of R language that runs in JVM. It is designed to speed-up some code with, for example, JIT compilation in for-loops. In some cases it can improve speed of some code. One cool thing that was shown is that you can use renjing as a package to speed-up some parts of the code.
+
+22. [odbc - A modern database interface](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/odbc-A-modern-database-interface?term=odbc%20-%20A%20modern%20database%20interface)
+
+Overview of [odbc](https://cran.r-project.org/package=odbc) package that is one part of modern pipeline of using R with databases without too much headache. I'm still unclear where you supposed to get ODBC drivers if you are not using professional version of RStudio. 
+
+23. [R4ML: A Scalable R for Machine Learning](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/R4ML-A-Scalable-R-for-Machine-Learning?term=R4ML%3A%20A%20Scalable%20R%20for%20Machine%20Learning)
+
+IBM package that abstracts away the work with Spark by providing a way to compile your R code to Spark code that can be executed in a distributed manner.
+
+24. [Improving DBI](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Improving-DBI?term=improving%20DBI)
+
+Update on the R Consortium-backed project to improve DBI in R.
+
+25. [Programming with tidyverse grammars](http://schd.ws/hosted_files/user2017/43/tidyeval-user.pdf)
+
+No video. Slides are extended and beautified version of [vignette](https://cran.r-project.org/web/packages/dplyr/vignettes/programming.html).
+
+26. [Taking Advantage of the Byte Code Compiler](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/Taking-Advantage-of-the-Byte-Code-Compiler?term=Taking%20Advantage%20of%20the%20Byte%20Code%20Compiler)
+
+Some practical cases of how to make sure that you actually using JIT. Similar to renjin you need to pay attention to not use `source`, `eval` and similar things since then there is no way for compiler to work properly.
+
+27. [R and Haskell: Combining the best of two worlds](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/R-and-Haskell-Combining-the-best-of-two-worlds?term=R%20and%20Haskell%3A%20Combining%20the%20best%20of%20two%20worlds)
+
+![](https://zgab33vy595fw5zq-zippykid.netdna-ssl.com/wp-content/uploads/2017/02/7k8tN.jpg)
+
+But the talk is about how one can use R from Haskell. Haskell provides a strong typing, while R takes a role to do machine learning and other cool stuff that is difficult in Haskell
+
+28. [shiny.collections: Google Docs-like live collaboration in Shiny](https://channel9.msdn.com/events/useR-international-R-User-conferences/useR-International-R-User-2017-Conference/shinycollections-Google-Docs-like-live-collaboration-in-Shiny?term=shiny.collections%3A%20Google%20Docs-like%20live%20collaboration%20in%20Shiny)
+
+The talk covers the package [shiny.collections](https://appsilon.github.io/shiny.collections/) that is designed to provide a way to have Google Docs-like collaboration. What it does is abstracts away a call to database that may change over time and you'll always get the most recent version of that database in your version of Shiny. In the presentation Marek showed how you can create a chat application with only 50 lines of code, so it can be a very interesting way to handle multiple users doing something in your shiny app with not too much overhead.

@@ -1,0 +1,71 @@
+---
+title: 'rstudio::conf 2018 Review: Part 2'
+author: Misha Balyasin
+date: '2018-06-03'
+tags:
+  - rstudioconf
+  - overview
+  - conference
+categories:
+  - meta
+slug: rstudio-conf-2018-review-part-2
+---
+
+Part 1 is [here](https://www.mishabalyasin.com/2018/05/26/rstudio-conf-2018-review-part-1/)
+
+Part 3 is [here](https://www.mishabalyasin.com/2018/06/22/rstudio-conf-2018-review-part-3/)
+
+Part 4 is [here](https://www.mishabalyasin.com/2018/06/25/rstudio-conf-2018-review-part-4/)
+
+
+12. [How I learned to stop worrying and love the firewall by Ian Lyttle](https://www.rstudio.com/resources/videos/how-i-learned-to-stop-worrying-and-love-the-firewall/).
+
+In this talk Ian described the workflow he devised in order to create private CRAN-like repos inside of firewall environments. Those environments are often the reality of life in enterprises, so this talk gives couple of concrete pieces of advice to succeed in this endeavour. Concretely, he showed the package `ghentr` (it has nothing to do with Ghent, as I thought previously) that simplifies workflow in case you are using Github Enterprise product. Underneath, this package uses `drat` and `usethis` packages to do the heavy-lifting.
+
+13. [Differentiating by data science by Eric Colson](https://www.rstudio.com/resources/videos/differentiating-by-data-science/).
+
+Eric Colson is the Chief Algorithms Officer from Stitch Fix. He described the approach they take in the company to differentiate via Data Science. The analogy comes from nature. If you are a giraffe then you differentiate vertically via long neck. In the same way, DS can be a way to differentiate a company from similar competitors. The way it is done in Stitch Fix is through two straightforward principles: DS should be at the table during framing of capabilities and capabilities are often conceived by DS. 
+
+Former is about a solution that is often overlooked if DS is not at the table. One example he provided is a situation with warehouses that would have been easily solved should there be a DS at the table. The latter is about pushing the envelope and providing insights directly to the business and actually creating new capabilities using DS. 
+
+14. [Agile data science by Elaine McVey](https://www.rstudio.com/resources/videos/agile-data-science/).
+
+Elaine shared her story of adopting Agile methodology to the work of data science. The motivating example of this adoption comes from three problems that she noticed herself as well as talking to other people doing similar work. Agile helps tackle those problems:
+
+  - Marginality: tangential to the core work of the organization. This can be improved with introduction of user stories. User stories allow to create shared value articulation between different stakeholders and help constrain the problem to one that will provide most value to end-user.
+
+  - Mystery: struggle to really understand what we do. In Agile, thinnest vertical slice helped with this problem by introducing shared value validation into the loop. Since team spends as little time as possible on creating first MVP, users have a chance to validate whether result is valuable for them and therefore guide development to most productive state.
+
+  - Misalignment: poor placement within the organization. Stakeholder review can be used to help with this problem. Every once a while (e.g., once a month) review with all of the stakeholders allows organization to agree on where resources should go. This allows for greater shared value prioritization.
+
+15. [Storytelling with R by Olga Pierce](https://www.rstudio.com/resources/videos/storytelling-with-r/).
+
+Olga Pierce from ProPublica shared her experience of using data to create data-driven stories. The main thrust of the talk is about not forgetting your audience. If your analysis is looking at a certain problem and you want a broad slice of people to connect to it, then it makes sense to spend just as much time (if not more) on crafting the story around it. Good storytelling in some sense is as important as analysis itself.
+
+16. [Large scale machine learning using TensorFlow, BigQuery and CloudML Engine within RStudio by Michael Quinn](https://www.rstudio.com/resources/videos/large-scale-machine-learning-using-tensorflow-bigquery-and-cloudml-engine-within-rstudio/).
+
+In this whirlwind of the talk, Michael went over multitude of tools that are available for R users via RStudio integration with Google products. One interesting comment at the end is that he mentioned even further collaboration of Google Cloud offerings with RStudio, so something to look forward to.
+
+17. [Deploying TensorFlow models with tfdeploy with Javier Luraschi](https://www.rstudio.com/resources/videos/deploying-tensorflow-models-with-tfdeploy/).
+
+Similar to previous talk, Javier showed suite of packages available for R users in order to use TensorFlow capabilities as a fullstack solution. Specifically, some packages are good for training (e.g., `tfruns`), some packages are good for exporting, while some other packages are good at serving resulting models to end customers via CloudML, TensorFlow Serving and any other avenue. 
+
+One cool demo he showed used `kerasjs` to embed resulting model directly into HTML presentation where you can actually draw a number that will be classified using trained model on the fly.
+
+18. [Building Spark ML pipelines with sparklyr by Kevin Kuo](https://www.rstudio.com/resources/videos/building-spark-ml-pipelines-with-sparklyr/).
+
+`sparklyr` is one of my favorite packages and every time I read/watch updates from the team I'm amazed at amount of work that they go through. In this talk, Kevin went over pipelines that are a way to work with data in Spark world. The API is light-weight and he mentioned that they are planning to open up developer API to have a way to integrate custom transformations inside of sparklyr. 
+
+This talk also had a succinct introduction to terminology used in Spark (e.g., what are transformarers and estimators), so it can be useful as an introduction to this topic.
+
+19. [Reinforcement learning in Minecraft with CNTK-R by Ali-Kazim Zaidi](https://www.rstudio.com/resources/videos/reinforcement-learning-in-minecraft-with-cntk-r/).
+
+This talk used Minecraft as a medium to create Reinforcement Learning agents that were trained with Microsoft CNTK platform. Talk is about the paper that used these tools to explore RL.
+
+20. [Phrasing: Communicating data science through tweets, gifs, and classic misdirection by Mara Averick](https://www.rstudio.com/resources/videos/phrasing-communicating-data-science-through-tweets-gifs-and-classic-misdirection/).
+
+Another great talk by Mara about using various means to pass on a message. Her "weapon" of choice is Twitter where she is very well-known in R-world as a repository of all things connected to R.
+
+21. [Rapid prototyping data products using Shiny by Tanya Cashorali](https://www.rstudio.com/resources/videos/rapid-prototyping-data-products-using-shiny/).
+
+As is clear from the name of the talk, Tanya is using Shiny to "get shit done" in biosector. In a way, it is a very similar idea to the talk about agile data science, but from a perspective of a consultancy, where you have multiple clients that all want something from you. So, using Shiny is a good example of how you can put something in front of a customer very quickly and then iterate on that. Otherwise it is possible to spend months implementing an "ideal" version of software to find out that no one needs it.
