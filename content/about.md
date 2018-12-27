@@ -11,11 +11,11 @@ Currently I m based in NY and planning to work as a data scientist in the coming
 This blog is about things that interest me or something I want to share with you, namely:
 
 1. Data Science and how I apply it to everyday life.
-2. The learning stuff I m interested in, included but not limited to Deep Learning, Deep Reinforcement Learning, Machine Learning.
+2. The "learning" stuff I m passionate about, included but not limited to Deep Learning, Deep Reinforcement Learning, Machine Learning.
 3. The sceranio I have faced or have something to say about, like music style transfer, DRL planning. etc
 4. Some notes of my reading and working
 5. My life in NY with my Husky, Alexa. The outdoor staff I enjoy like skateboard and hiking.
 
 So if you are interested in any of these topics - feel free to stick around!
 
-![Alexa, 4 months @ Central Park, July 4th 2018](Alexa_4_months.jpg)
+![Alexa, 4 months @ Central Park, July 4th 2018](/img/Alexa_4_months.jpg)
