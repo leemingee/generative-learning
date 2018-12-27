@@ -122,8 +122,8 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
     # todo setup this
     owner = "leemingee"              # Your GitHub ID
     repo = "MessageBoard"               # The repo to store comments
-    clientId = "f9690660976085578e62"           # Your client ID
-    clientSecret = "c908008cf475c9dfa6f2a4ecddc31a40ea54eee7"       # Your client secret
+    clientId = "79efd63566685a8f7c82"           # Your client ID
+    clientSecret = "a92fbeb288ba5d3198eca78bbf1ddd720eee478f"       # Your client secret
 
   [params.flowchartDiagrams]# see https://blog.olowolo.com/example-site/post/js-flowchart-diagrams/
     enable = true
