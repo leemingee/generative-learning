@@ -1,6 +1,6 @@
 baseURL = "www.ming-learning.com"
 DefaultContentLanguage = "en"
-title = "test"
+title = "Generative Learning"
 theme = "beautifulhugo"
 metaDataFormat = "yaml"
 pygmentsUseClasses = true
@@ -14,7 +14,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     # Sets the meta tag description, usually reserved for the main page
     subtitle = "This is how I rock"
     # This will appear on the top left of the navigation bar
-    navbarTitle= "As a Machine Learning Engineer"
+    navbarTitle= "Generative Learning"
     # set this to the section name if section is not post
     viewMorePostLink= "/post/"
     logo = "img/me.jpg"
