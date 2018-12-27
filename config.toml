@@ -20,7 +20,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     logo = "img/me.jpg"
     dateFormat = "January 2, 2006"
     commit = false
-    rss = true
+    # rss = true
     comments = true
     #[todo] the staticman_api setup
     # it seems that this is a must 
