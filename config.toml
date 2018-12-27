@@ -1,9 +1,15 @@
 languageCode = "en-us"
-title = "Generative Learning"
+title = "test for index"
+# this is where I can change the main page, first navigation
 baseURL = "http://localhost:1313/"
 theme = "hugo-theme-massively"
 googleanalytics = "UA-113904582-3"
 disqusShortname = "hugo-massively"
+
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 # [params]
   # set below parameter to define a favicon
@@ -14,13 +20,65 @@ disqusShortname = "hugo-massively"
 #     foldername = "post"
 #     pagesize = "6"
 #     featuredpost = "true"
-
+########
+# copied from the others work
+########
 [languages]
 [languages.en]
   languageName = "English"
-[languages.es]
-  languageName = "Español"
-  title = "Massively - Versión Español"
+#[languages.es]
+#  languageName = "Español"
+#  title = "Massively - Versión Español"
 #[languages.fr]
 #  languageName = "Français"
 #  title = "Massively - Version Française"
+
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+[Params]
+    # Sets the meta tag description, usually reserved for the main page
+    subtitle          = "Blog about things in data science that interest me"
+    # This will appear on the top left of the navigation bar
+    navbarTitle          = "My R-musings"
+    # set this to the section name if section is not post
+    viewMorePostLink     = "/post/"
+    logo = "img/me.jpg"
+    dateFormat = "January 2, 2006"
+    commit = false
+    rss = true
+    comments = true
+    staticman_api = "https://staticmanforromatik.herokuapp.com/v2/entry/romatik/netlify-blog/master/comments"
+
+# Set up your menu items in the navigation bar
+# You can use identifier to prepend a font awesome icon to your text
+[[menu.main]]
+    name = "All posts"
+    url = "/post/"
+    identifier = "fa fa-newspaper-o"
+    weight = 1
+
+[[menu.main]]
+    name = "Categories"
+    url = "/categories"
+    weight = 2
+
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 3
+
+[[menu.main]]
+    name = "About"
+    url = "/about"
+    weight = 4
+
+[Author]
+  name = "Ming Li"
+  email = "ml4076@columbia.edu"
+  github = "leemingee"
+  linkedin = "leemingee"
+  #stackoverflow = "users/XXXXXXX/username"
+
+
