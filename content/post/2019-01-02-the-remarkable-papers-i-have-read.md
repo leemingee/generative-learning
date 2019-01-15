@@ -1,5 +1,5 @@
 ---
-title: My first blog
+title: The remarkable Papers I have read
 author: Ming Li
 date: '2019-01-02'
 slug: the-remarkable-papers-i-have-read
@@ -8,8 +8,6 @@ categories:
 tags:
   - utils
 ---
-
-The remarkable Papers I have read
 
 The initial intent to write this blog is to sorting out the paper I read in 2018. As the AI area is changing and new techs are coming up every minute, so I want myself to keep up to date of the remarkable papers. Stay hungry, stay foolish.
 
