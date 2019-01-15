@@ -25,6 +25,7 @@ The papers mainly can be divided in several eras: utils of Data science, Machine
 
 # Reinforcement Learning
 ## PG related
+- Policy Gradient Methods for Reinforcement Learning with Function Approximation
 - Trust Region Policy Optimization
 - Asynchronous Methods for Deep Reinforcement Learning
 - Proximal Policy Optimization Algorithms
