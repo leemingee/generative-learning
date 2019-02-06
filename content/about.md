@@ -5,9 +5,9 @@ menu: "main"
 weight: 50
 ---
 
-This is two days to Chrismas, the weather become warmer in NY these days, nice time to launch this blog.
+There are two days left to Chrismas day, the weather become warmer in NY recently, nice time to launch this blog.  
 My name is Ming Li, currently a Statistics student in Columbia University. 
-Currently I m based in NY and planning to work as a data scientist in the coming year.
+Currently I m based in NY and planning to work as a data scientist in the coming year.  
 This blog is about things that interest me or something I want to share with you, namely:
 
 1. Data Science and how I apply it to everyday life.
