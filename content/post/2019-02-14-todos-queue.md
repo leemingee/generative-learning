@@ -56,4 +56,9 @@ Keep this blog as the queue-style log of the todos. As I hope I can get some tim
         </tr>
     </table>
 
-Rock it!
+Let's Rock THEM!
+
+Some links to save time: 
+ 
+1. [GTR 911 BUY LINK](https://shop.lego.com/en-US/product/Porsche-911-GT3-RS-42056)   
+1. [C++ PRIMER PLUS AMAZON LINK](https://www.amazon.com/gp/cart/view.html/ref=nav_cart)
