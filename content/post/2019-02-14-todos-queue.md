@@ -29,9 +29,9 @@ Keep this blog as the queue-style log of the todos. As I hope I can get some tim
         <tr>
             <th>test module for python learning, nose and pytest module</th>
             <th>02/14/2019</th>
-            <th>NA</th>
+            <th>02/17/2019</th>
             <th>5</th>
-            <th>0</th>
+            <th>1</th>
         </tr>
         <tr>
             <th>coolstuff repo code clean</th>
