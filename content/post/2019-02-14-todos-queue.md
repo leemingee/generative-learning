@@ -48,6 +48,13 @@ Keep this blog as the queue-style log of the todos. As I hope I can get some tim
             <th>0</th>
         </tr>
         <tr>
+            <th>DRL UCB course review</th>
+            <th>02/17/2019</th>
+            <th>NA</th>
+            <th>3</th>
+            <th>0</th>
+        </tr>
+        <tr>
             <th>template</th>
             <th>//2019</th>
             <th>NA</th>
